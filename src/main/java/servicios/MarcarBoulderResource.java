@@ -28,9 +28,9 @@ import persistencia.BaseDatos;
  */
 public class MarcarBoulderResource {
 
-    private Escalador escalador;
-    private BaseDatos bd;
-    private Evento evento;
+    private final Escalador escalador;
+    private final BaseDatos bd;
+    private final Evento evento;
     private Boulder boulder;
 
     public MarcarBoulderResource(Escalador escalador, Evento evento, String idBoulder) {
@@ -42,16 +42,15 @@ public class MarcarBoulderResource {
     }
 
     @POST
-    public void putBoulderTerminado(@PathParam("idBoulder") String idBoulder) {
+    public void marcarBoulderX(@PathParam("idBoulder") String idBoulder) {
         MarcarBoulder marca = new MarcarBoulder(escalador, boulder, evento);
-        marca.terminar();
         bd.persist(marca, MarcarBoulder.class);
     }
 
     @DELETE
     public void desmarcarBoulderX(@PathParam("idBoulder") String idBoulder) {
-        boulder = new Boulder();
-        boulder.setId(new Long(idBoulder));
+//        boulder = new Boulder();
+//        boulder.setId(new Long(idBoulder));
         MarcarBoulder m = bd.getMarcaBoulderBy(escalador, boulder);
         bd.remove(m, MarcarBoulder.class);
     }

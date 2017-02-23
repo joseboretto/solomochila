@@ -29,7 +29,7 @@ public class EscaladorREST {
     private Escalador escalador;
 
     public EscaladorREST() {
-        System.out.println("newEsaladorREST()");
+//        System.out.println("newEsaladorREST()");
         //COMO NO ENTINEDO EL CICLO DE VIDA DE LOS SERVLETS ME DA NULL POINTER
 //        escalador = new Escalador();
 //        escalador.setEmail(idEscalador);
@@ -41,7 +41,7 @@ public class EscaladorREST {
     public List<Inscripcion> getInscripciones() {
         escalador = new Escalador();
         escalador.setEmail(idEscalador);
-        System.out.println("getInscripciones() - " + escalador.getEmail());
+//        System.out.println("getInscripciones() - " + escalador.getEmail());
         BaseDatos bd = new BaseDatos();
         return bd.getInscripcionEscaldor(escalador);
     }
@@ -50,7 +50,7 @@ public class EscaladorREST {
     public Object eventos(@PathParam("idEvento") String idEvento) {
         escalador = new Escalador();
         escalador.setEmail(idEscalador);
-        System.out.println("eventos() - " + escalador.getEmail());
+//        System.out.println("eventos() - " + escalador.getEmail());
         return new EventoResource(escalador, idEvento);
     }
 }

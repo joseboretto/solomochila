@@ -23,14 +23,11 @@ public class Escalador implements Serializable {
     private String apellido;
     @Id
     private String email;
-    @NotNull
-    private String password;
 
-    public Escalador(String nombre, String apellido, String email, String password) {
+    public Escalador(String nombre, String apellido, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
-        this.password = password;
     }
 
     public Escalador() {
@@ -59,18 +56,9 @@ public class Escalador implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String toString() {
-        return "Escalador{" + "nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", password=" + password + '}';
+        return "Escalador{" + "nombre=" + nombre + ", apellido=" + apellido + ", email=" + email;
     }
 
 }

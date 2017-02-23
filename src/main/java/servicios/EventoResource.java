@@ -26,10 +26,9 @@ import persistencia.BaseDatos;
  */
 public class EventoResource {
 
-    private Escalador escalador;
-    private BaseDatos bd;
-    private Evento evento;
-    private Boulder boulder;
+    private final Escalador escalador;
+    private final BaseDatos bd;
+    private final Evento evento;
 
     public EventoResource(Escalador escalador, String idEvento) {
         System.out.println("new EventoResource");
@@ -43,9 +42,6 @@ public class EventoResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String comprobarInscripcion() {
         System.out.println("comprobar inscripcion");
-        System.out.println(evento.getId());
-        System.out.println(escalador.getEmail());
-
         return "{ \"resultado\" : \"" + bd.comprobarInscripcion(evento, escalador) + "\" }";
     }
 
@@ -57,10 +53,6 @@ public class EventoResource {
         Categoria categoria = new Categoria();
         categoria.setId(new Long(idCategoria));
         Inscripcion inscripcion = new Inscripcion(new Date(), escalador, categoria, evento);
-        System.out.println(evento.getId());
-        System.out.println(escalador.getEmail());
-        System.out.println(categoria.getId());
-
         bd.persist(inscripcion, Inscripcion.class);
     }
 

@@ -5,7 +5,7 @@
  */
 package servicios;
 
-import authentication.AuthenticationFilter;
+import autenticacion.FiltroAutenticacion;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,12 +26,9 @@ import persistencia.BaseDatos;
 @Path("eventos")
 public class EventoREST {
 
-    private static final Logger LOGGER = Logger.getLogger(EventoREST.class.getName());
-
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Evento> todosLosEventosInscriptos() {
-        LOGGER.log(Level.INFO, "iNFO");
         BaseDatos bd = new BaseDatos();
         return bd.getEventos();
     }

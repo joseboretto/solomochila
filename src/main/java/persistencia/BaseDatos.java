@@ -94,6 +94,7 @@ public class BaseDatos {
     public List<Evento> getEventos() {
         Query query = em.createQuery("SELECT e FROM Evento e");
         List<Evento> l = query.getResultList();
+        em.close();
         return l;
     }
 
@@ -186,7 +187,7 @@ public class BaseDatos {
     }
     // todas las consultas deberian estar en esta clase o algun metodo para no repetir tanto codigo
 
-    public boolean insert() {
+    public boolean cargarDatos() {
         List list = getEventos();
         if (list.size() > 1) {
             return false;
@@ -275,6 +276,7 @@ public class BaseDatos {
     }
 
     public static void decidirBaseDatos() {
+        //se ejecuta una sola vez en toda la vida de la aplicaccion
         if (selector == -1) {
             System.out.println("============  decidirBaseDatos()");
             try {

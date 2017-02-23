@@ -39,57 +39,7 @@ public class EjecutablesREST {
     @Produces({MediaType.TEXT_PLAIN})
     public String todosLosEventosInscriptos() {
         BaseDatos bd = new BaseDatos();
-        return "Se guardaron?" +  bd.insert();
-    }
-
-    @Path("env")
-    @GET
-    @Produces({MediaType.TEXT_PLAIN})
-    public String env() {
-        String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-        String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-        String user = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
-        String password = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
-        String url = System.getenv("OPENSHIFT_MYSQL_DB_URL");
-
-        return "Host: " + host + ", Puerto: " + port + ", User: " + user + ", Pswd:" + password+ ", URL:" + url;
-    }
-
-    @Path("persist")
-    @GET
-    @Produces({MediaType.TEXT_PLAIN})
-    public String persist() {
-        
-        String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-        String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-        String user = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
-        String password = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
-        
-        Map<String, String> persistenceMap = new HashMap<String, String>();
-
-        persistenceMap.put("javax.persistence.jdbc.url", "jdbc:mysql://"+ host + ":"+ port + "/solomochila");
-        persistenceMap.put("javax.persistence.jdbc.user", user);
-        persistenceMap.put("javax.persistence.jdbc.password", password);
-        persistenceMap.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
-
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("OpenShiftJPA", persistenceMap);
-        EntityManager manager = managerFactory.createEntityManager();
-        return "persist";
-    }
-    
-    @Path("db")
-    @GET
-    @Produces({MediaType.TEXT_PLAIN})
-    public String db() {
-        String result = "Datos ";
-        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("OpenShiftJPA");
-        Map<String,Object> props = managerFactory.getProperties();
-        for (Map.Entry<String, Object> entry : props.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            result += "/n Key "+ key + "value" + value;
-        }
-        return result;
+        return "Se guardaron? - " +  bd.cargarDatos();
     }
 
 }

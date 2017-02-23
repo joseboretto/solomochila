@@ -5,7 +5,7 @@
     <artifactId>solomochila</artifactId>
     <packaging>war</packaging>
     <version>1.0</version>
-    <name>solomochila 2</name>
+    <name>solomochila</name>
     <repositories>
         <repository>
             <id>eap</id>
