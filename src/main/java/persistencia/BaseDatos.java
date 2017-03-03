@@ -120,8 +120,14 @@ public class BaseDatos {
         Query query = em.createQuery(
                 " SELECT i "
                 + "FROM Inscripcion i "
-                + "JOIN FETCH i.evento e "
+                + "JOIN i.evento e "
                 + "WHERE i.escalador = :email ");
+//      
+//// EVITAMOS EL JOIN 
+//        Query query = em.createQuery(
+//                " SELECT i "
+//                + "FROM Inscripcion i J"
+//                + "WHERE i.evento.escalador = :email ");
         query.setParameter("email", escalador);
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Inscripcion> l = query.getResultList();
@@ -184,6 +190,9 @@ public class BaseDatos {
         em.getTransaction().begin();
         em.remove(clazz.cast(o));
         em.getTransaction().commit();
+    }
+    public <T> T find(Long id, Class<T> clazz) {
+        return em.find(clazz,id);
     }
     // todas las consultas deberian estar en esta clase o algun metodo para no repetir tanto codigo
 
@@ -282,13 +291,13 @@ public class BaseDatos {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connect = (Connection) DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/solomochila?user=root&password=Enter789&verifyServerCertificate=false&useSSL=false&requireSSL=false");
+                        "jdbc:mysql://localhost:3306/solomochila?user=root&password=Enter789&verifyServerCertificate=false&useSSL=false&requireSSL=false");
                 selector = LOCAl;
             } catch (ClassNotFoundException | SQLException ex) {
                 System.out.println("============  ERROR CONEXION");
                 selector = OpenShift;
                 Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
-            
+
             }
         }
 

@@ -23,6 +23,7 @@ function generarInscripciones(misInscripciones) {
             var inscripcion = misInscripciones[i];
             var itemLista = document.createElement("li");
             itemLista.className = "collection-item avatar";
+            itemLista.id = inscripcion.id;
             cuerpoLista(inscripcion, itemLista);
             botonLista(inscripcion, itemLista);
             //al ultimo agrego el item
@@ -69,8 +70,18 @@ function cuerpoLista(inscripcion, itemLista) {
             "\n Categoria: " + inscripcion.categoria.categoria +
             "\n Acreditada: " + inscripcion.estaAcreditada;
 
+    var contenidoSecundario = document.createElement("a");
+    contenidoSecundario.className = "secondary-content";
+    contenidoSecundario.setAttribute('onclick', "eliminarInscripcion("+ inscripcion.id +","+ evento.id  +")");
+    var botonEliminar = document.createElement("i");
+    botonEliminar.className = "material-icons";
+    botonEliminar.innerText = "delete";
+
+    contenidoSecundario.appendChild(botonEliminar);
+
     itemLista.appendChild(avatar);
     itemLista.appendChild(titulo);
+    itemLista.appendChild(contenidoSecundario);
 
     row.appendChild(columnaIzquierda);
     row.appendChild(columnaDerecha);
@@ -123,7 +134,7 @@ function obtenerInscripciones(hostURL) {
             console.log(msg.status);
             if (msg.status == 401) {
                 sessionStorage.removeItem('login');
-                                location.reload();
+                location.reload();
 
             }
 
@@ -132,6 +143,31 @@ function obtenerInscripciones(hostURL) {
     });
 
 
+
+}
+function eliminarInscripcion(idInscripcion, idEvento) {
+    console.log("eliminarInscripcion");
+    var url = hostURL + 'api/escaladores/' + login.email + '/eventos/'+idEvento +'/inscripcion/'+idInscripcion
+    $.ajax({
+        type: "DELETE",
+        url: url,
+        success: function (data) {
+            //acordate que es asincronico, crea un hilo para no congelar la pantalla
+           console.log("exito eliminar");
+           $( "#"+idInscripcion ).remove();
+        },
+        error: function (msg) {
+            console.log("Error eliminar");
+            console.log(msg);
+            console.log(msg.status);
+            if (msg.status == 401) {
+                sessionStorage.removeItem('login');
+                location.reload();
+
+            }
+
+        }
+    });
 
 }
 window.onload = function () {

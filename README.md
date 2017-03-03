@@ -27,6 +27,9 @@ El tema está ahí, cuando todos devuelven los papeles, **hay que contarlos uno 
 La ventaja de hacer una APP sería que cada competidor la baje y tenga una grilla de botones numerados, donde cada escalador pueda seleccionar su resultado y que la contabilización sea en línea.
 Además de agregar todos los ABM de administración para el evento.
 
+# Principios de Diseno
+
+* Programar hacia las iterfaces y no las implementaciones
 
 # Tecnologia
 
@@ -44,20 +47,11 @@ Además de agregar todos los ABM de administración para el evento.
 
 # WorkFlow
 
-Se eleimino la branch master. Docs esta como principal.  
-Creo una nueva branch desde development por cada feature.
-1. (on branch development) $ git merge production
+Filosofia de Continue Delivery:
+Mantener los commmits pequenos y subir siempre a Gihub entonces Jenkins hace el deploy. Si tengo algun error ya se donde buscarlo.
+En cambio si son muchos es mas dificil.
 
-2. (resolve any merge conflicts if there are any)
-
-3. git checkout production
-
-4. git merge development (there won't be any conflicts now)
-
-PD: Para descargar la branch production.
-`git checkout -b production origin/production`
-
-
+Eliminamos el resto de las branches para fomentar lo anteior
 
 # User Stories
 
@@ -80,3 +74,31 @@ Nota: Nombre, Apellido, Mail, Telefono, Categoria (Mujer, Hombre, preguntar que 
 
 6. Yo como Organizador, quiero crear un evento, para que los escaladores puedan inscribirse. <br>
 Nota: Lugar, Fecha y Hora de inicio, Nombre, Costo, Modalidad (Festival o Libre), Cantidad de boulder y puntaje de cada uno.
+
+# API URL
+
+* Todos los eventos
+/api/eventos (GET)
+
+* Obtener token de autenticacion
+/api/authentication (POST: googleToken)
+
+↓↓↓ Necesitan autenticacion ↓↓↓
+* Inscripciones del escalador
+/api/escaladores/{idEscalador}/eventos (GET)
+
+* Comprobar Inscripcion del escalador a ese evento
+/api/escaladores/{idEscalador}/eventos/{idEvento} (GET)
+
+* Inscripcion del escalador a ese evento en esa categoria
+/api/escaladores/{idEscalador}/eventos/{idEvento}/categorias/{idCategoria} (POST)
+
+* Boulder terminados del escalador en ese evento
+/api/escaladores/{idEscalador}/eventos/{idEvento}/terminarBoulder (GET)
+
+* Boulder terminados del escalador en ese evento (POST , DELETE)
+/api/escaladores/{idEscalador}/eventos/{idEvento}/terminarBoulder/{idBoulder}
+
+Formato autenticacion: Bearer username:token
+
+Ejemplo: "Bearer joseboretto@gmail.com:2a5836c2-e3ef-47ee-9de1-290c355ab90b"

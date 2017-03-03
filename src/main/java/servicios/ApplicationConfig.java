@@ -30,11 +30,13 @@ public class ApplicationConfig extends Application {
      * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(autenticacion.ServicioLogin.class);
         resources.add(ejecutables.EjecutablesREST.class);
         resources.add(servicios.EscaladorREST.class);
         resources.add(servicios.EventoREST.class);
+        resources.add(servicios.EventoResource.class);
         resources.add(servicios.JsonMoxyConfigurationContextResolver.class);
+        resources.add(servicios.Login.class);
+        resources.add(servicios.MarcarBoulderResource.class);
     }
 
 }

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package autenticacion;
+package servicios;
 
+import autenticacion.Autenticador;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -19,7 +20,7 @@ import modelo.Escalador;
  * @author jose
  */
 @Path("/authentication")
-public class ServicioLogin {
+public class Login {
 
     Autenticador authenticator;
 

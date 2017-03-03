@@ -7,6 +7,7 @@ package servicios;
 
 import java.util.Date;
 import java.util.List;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -54,6 +55,14 @@ public class EventoResource {
         categoria.setId(new Long(idCategoria));
         Inscripcion inscripcion = new Inscripcion(new Date(), escalador, categoria, evento);
         bd.persist(inscripcion, Inscripcion.class);
+    }
+
+    @DELETE
+    @Path("inscripcion/{idInscripcion}")
+    public void eliminarIncripcion(@PathParam("idInscripcion") String idInscripcion) {
+        System.out.println("eliminar inscribir");
+        Inscripcion inscripcion = bd.find(new Long(idInscripcion), Inscripcion.class);
+        bd.remove(inscripcion, Inscripcion.class);
     }
 
     @GET

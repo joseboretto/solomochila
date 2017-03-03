@@ -9,6 +9,7 @@ package autenticacion;
  *
  * @author jose
  */
+import servicios.Login;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.HttpTransport;
@@ -128,7 +129,7 @@ public final class Autenticador {
         try {
             idToken = verifier.verify(UserToken);
         } catch (GeneralSecurityException | IOException ex) {
-            Logger.getLogger(ServicioLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (idToken != null) {
             GoogleIdToken.Payload payload = idToken.getPayload();
