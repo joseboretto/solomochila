@@ -191,8 +191,9 @@ public class BaseDatos {
         em.remove(clazz.cast(o));
         em.getTransaction().commit();
     }
+
     public <T> T find(Long id, Class<T> clazz) {
-        return em.find(clazz,id);
+        return em.find(clazz, id);
     }
     // todas las consultas deberian estar en esta clase o algun metodo para no repetir tanto codigo
 
@@ -209,6 +210,30 @@ public class BaseDatos {
         Boulder boulder14 = new Boulder(5, 50);
         Boulder boulder15 = new Boulder(6, 60);
         Boulder boulder16 = new Boulder(1, 10);
+        Boulder boulder17 = new Boulder(2, 20);
+        Boulder boulder18 = new Boulder(3, 30);
+        Boulder boulder19 = new Boulder(4, 40);
+        Boulder boulder110 = new Boulder(5, 50);
+        Boulder boulder111 = new Boulder(6, 60);
+        Boulder boulder112 = new Boulder(1, 10);
+        Boulder boulder113 = new Boulder(2, 20);
+        Boulder boulder114 = new Boulder(3, 30);
+        Boulder boulder115 = new Boulder(4, 40);
+        Boulder boulder116 = new Boulder(5, 50);
+        Boulder boulder117 = new Boulder(6, 60);
+        Boulder boulder118 = new Boulder(1, 10);
+        Boulder boulder119 = new Boulder(1, 10);
+        Boulder boulder120 = new Boulder(1, 10);
+        Boulder boulder121 = new Boulder(1, 10);
+        Boulder boulder122 = new Boulder(1, 10);
+        Boulder boulder123 = new Boulder(1, 10);
+        Boulder boulder124 = new Boulder(1, 10);
+        Boulder boulder125 = new Boulder(1, 10);
+        Boulder boulder126 = new Boulder(1, 10);
+        Boulder boulder127 = new Boulder(1, 10);
+        Boulder boulder128 = new Boulder(1, 10);
+        Boulder boulder129 = new Boulder(1, 10);
+        Boulder boulder130 = new Boulder(1, 10);
 
         Boulder boulder21 = new Boulder(1, 10);
         Boulder boulder22 = new Boulder(2, 20);
@@ -232,6 +257,30 @@ public class BaseDatos {
         lista1.add(boulder14);
         lista1.add(boulder15);
         lista1.add(boulder16);
+        lista1.add(boulder17);
+        lista1.add(boulder18);
+        lista1.add(boulder19);
+        lista1.add(boulder110);
+        lista1.add(boulder111);
+        lista1.add(boulder112);
+        lista1.add(boulder113);
+        lista1.add(boulder114);
+        lista1.add(boulder115);
+        lista1.add(boulder116);
+        lista1.add(boulder117);
+        lista1.add(boulder118);
+        lista1.add(boulder119);
+        lista1.add(boulder120);
+        lista1.add(boulder121);
+        lista1.add(boulder122);
+        lista1.add(boulder123);
+        lista1.add(boulder124);
+        lista1.add(boulder125);
+        lista1.add(boulder126);
+        lista1.add(boulder127);
+        lista1.add(boulder128);
+        lista1.add(boulder129);
+        lista1.add(boulder130);
 
         List<Boulder> lista2 = new LinkedList();
         lista2.add(boulder21);

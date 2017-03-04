@@ -61,6 +61,7 @@ public class EventoResource {
     @Path("inscripcion/{idInscripcion}")
     public void eliminarIncripcion(@PathParam("idInscripcion") String idInscripcion) {
         System.out.println("eliminar inscribir");
+        //debo elimianr las marcas tambien
         Inscripcion inscripcion = bd.find(new Long(idInscripcion), Inscripcion.class);
         bd.remove(inscripcion, Inscripcion.class);
     }
