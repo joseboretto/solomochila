@@ -5,35 +5,23 @@
  */
 package modelo;
 
-import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author jose
  */
-@Entity
-public class Organizador implements Serializable, Useriable {
-    
-    @NotNull
-    private String nombre;
-    @NotNull
-    private String apellido;
-    @Id
-    private String email;
-    @OneToMany
-    private List<Evento> eventos;
+public class User implements Useriable{
 
-    //JPA only
-    public Organizador() {
+    private String nombre;
+    private String apellido;
+    private String email;
+
+    public User() {
     }
 
     
-    public Organizador(String nombre, String apellido, String email) {
+    public User(String nombre, String apellido, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
@@ -43,30 +31,20 @@ public class Organizador implements Serializable, Useriable {
         return nombre;
     }
 
-    public String getApellido() {
-        return apellido;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public List<Evento> getEventos() {
-        return eventos;
-    }
-
-    public void setEventos(List<Evento> eventos) {
-        this.eventos = eventos;
-    }
-    
-    
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    public String getApellido() {
+        return apellido;
+    }
+
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
@@ -74,10 +52,4 @@ public class Organizador implements Serializable, Useriable {
     }
     
     
-    
-    
-    
-    
-    
-
 }

@@ -27,6 +27,7 @@ import modelo.Evento;
 import modelo.Inscripcion;
 import modelo.MarcarBoulder;
 import modelo.Modalidad;
+import modelo.Organizador;
 
 /**
  *
@@ -60,6 +61,45 @@ public class BaseDatos {
         }
     }
 
+    public <T> void persist(Object o, Class<T> clazz) {
+        em.getTransaction().begin();
+        em.persist(clazz.cast(o));
+        em.getTransaction().commit();
+    }
+
+    public <T> void remove(Object o, Class<T> clazz) {
+        em.getTransaction().begin();
+        em.remove(clazz.cast(o));
+        em.getTransaction().commit();
+    }
+
+    public <T> T find(Long id, Class<T> clazz) {
+        return em.find(clazz, id);
+    }
+
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public static void decidirBaseDatos() {
+        //se ejecuta una sola vez en toda la vida de la aplicaccion
+        if (selector == -1) {
+            System.out.println("============  decidirBaseDatos()");
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection connect = (Connection) DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/solomochila?user=root&password=Enter789&verifyServerCertificate=false&useSSL=false&requireSSL=false");
+                selector = LOCAl;
+            } catch (ClassNotFoundException | SQLException ex) {
+                System.out.println("============  ERROR CONEXION");
+                selector = OpenShift;
+                Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+        }
+
+    }
+
     private void openShift() {
         System.out.println("============================= CONFIGURO OPEN SHIFT");
         selector = OpenShift;
@@ -91,114 +131,9 @@ public class BaseDatos {
         emf = Persistence.createEntityManagerFactory("PersistenceUnit", persistenceMap);
     }
 
-    public List<Evento> getEventos() {
-        Query query = em.createQuery("SELECT e FROM Evento e");
-        List<Evento> l = query.getResultList();
-        em.close();
-        return l;
-    }
-
-    public List<Escalador> getEscaladores() {
-        Query query = em.createQuery(" SELECT e FROM Escalador e ");
-        List<Escalador> l = query.getResultList();
-        return l;
-    }
-
-    public Escalador getEscacaldarFromDataBase(String email) {
-        Query query = em.createQuery(
-                " SELECT e "
-                + "FROM Escalador e "
-                + "WHERE e.email = :email ");
-        Escalador escalador = new Escalador();
-        escalador.setEmail(email);
-        query.setParameter("email", escalador);
-        escalador = (Escalador) query.getSingleResult();
-        return escalador;
-    }
-
-    public List<Inscripcion> getInscripcionEscaldor(Escalador escalador) {
-        Query query = em.createQuery(
-                " SELECT i "
-                + "FROM Inscripcion i "
-                + "JOIN i.evento e "
-                + "WHERE i.escalador = :email ");
-//      
-//// EVITAMOS EL JOIN 
-//        Query query = em.createQuery(
-//                " SELECT i "
-//                + "FROM Inscripcion i J"
-//                + "WHERE i.evento.escalador = :email ");
-        query.setParameter("email", escalador);
-        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-        List<Inscripcion> l = query.getResultList();
-        return l;
-    }
-
-    public Boolean comprobarInscripcion(Evento evento, Escalador escalador) {
-        Query query = em.createQuery(
-                " SELECT i "
-                + "FROM Inscripcion i "
-                + "WHERE i.escalador = :email AND i.evento = :evento ");
-        query.setParameter("email", escalador);
-        query.setParameter("evento", evento);
-
-        try {
-            query.getSingleResult();
-        } catch (NoResultException ex) {
-            System.out.println("no esta inscripto");
-            return false;
-        }
-        System.out.println("si esta inscripto");
-        return true;
-    }
-
-    public MarcarBoulder getMarcaBoulderBy(Escalador escalador, Boulder boulder) {
-        Query query = em.createQuery(
-                " SELECT m "
-                + "FROM MarcarBoulder m "
-                + "WHERE m.escalador = :email AND m.boulder = :idBoulder");
-        query.setParameter("email", escalador);
-        query.setParameter("idBoulder", boulder);
-        return (MarcarBoulder) query.getSingleResult();
-    }
-
-    public List<Boulder> getMarcasBouldersBy(Escalador escalador, Evento evento) {
-        List<Boulder> resultado = new LinkedList();
-        Query query = em.createQuery(
-                " SELECT m "
-                + "FROM MarcarBoulder m "
-                + "WHERE m.escalador = :email AND m.evento = :idEvento");
-        query.setParameter("email", escalador);
-        query.setParameter("idEvento", evento);
-        List<Object> l = query.getResultList();
-        for (Object object : l) {
-            MarcarBoulder marcarBoulder = (MarcarBoulder) object;
-            Boulder boulder = marcarBoulder.getBoulder();
-            resultado.add(boulder);
-        }
-
-        return resultado;
-    }
-
-    public <T> void persist(Object o, Class<T> clazz) {
-        em.getTransaction().begin();
-        em.persist(clazz.cast(o));
-        em.getTransaction().commit();
-    }
-
-    public <T> void remove(Object o, Class<T> clazz) {
-        em.getTransaction().begin();
-        em.remove(clazz.cast(o));
-        em.getTransaction().commit();
-    }
-
-    public <T> T find(Long id, Class<T> clazz) {
-        return em.find(clazz, id);
-    }
-    // todas las consultas deberian estar en esta clase o algun metodo para no repetir tanto codigo
-
     public boolean cargarDatos() {
-        List list = getEventos();
+        Query query = em.createQuery("SELECT e FROM Evento e");
+        List<Evento> list = query.getResultList();
         if (list.size() > 1) {
             return false;
         }
@@ -323,33 +258,21 @@ public class BaseDatos {
         Evento evento4 = new Evento("Block Fest Primaveral", "Chubut",
                 new Date(1552226220000L), 10, modalidadBloque, lista4, categorias1);
 
+        ///ORGANIZADOR
+        Organizador organizador = new Organizador("root", "root", "root@root.com");
+        List<Evento> listaEventos = new LinkedList();
+        listaEventos.add(evento1);
+        organizador.setEventos(listaEventos);
+
         em.getTransaction().begin();
         em.persist(evento1);
         em.persist(evento2);
         em.persist(evento3);
         em.persist(evento4);
+        em.persist(organizador);
         em.getTransaction().commit();
 
         return true;
-    }
-
-    public static void decidirBaseDatos() {
-        //se ejecuta una sola vez en toda la vida de la aplicaccion
-        if (selector == -1) {
-            System.out.println("============  decidirBaseDatos()");
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection connect = (Connection) DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/solomochila?user=root&password=Enter789&verifyServerCertificate=false&useSSL=false&requireSSL=false");
-                selector = LOCAl;
-            } catch (ClassNotFoundException | SQLException ex) {
-                System.out.println("============  ERROR CONEXION");
-                selector = OpenShift;
-                Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
-
-            }
-        }
-
     }
 
 }

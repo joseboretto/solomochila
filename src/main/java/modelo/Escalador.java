@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @author jose
  */
 @Entity
-public class Escalador implements Serializable {
+public class Escalador implements Serializable, Useriable {
 
     @NotNull
     private String nombre;

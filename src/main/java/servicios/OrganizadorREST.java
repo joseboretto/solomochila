@@ -7,29 +7,33 @@ package servicios;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import modelo.Escalador;
+import modelo.Evento;
 import modelo.Inscripcion;
+import modelo.Organizador;
 import persistencia.BaseDatos;
-import persistencia.EscaladorDAO;
+import persistencia.OrganizadorDAO;
 
 /**
  *
  * @author jose
  */
 //@Stateless
-@Path("escaladores/{idEscalador}")
-public class EscaladorREST {
+@Path("organizadores/{idOrganizador}")
+public class OrganizadorREST {
 
-    @PathParam("idEscalador")
-    private String idEscalador;
-    private Escalador escalador;
+    @PathParam("idOrganizador")
+    private String idOrganizador;
+    private Organizador organizador;
 
-    public EscaladorREST() {
+    public OrganizadorREST() {
 //        System.out.println("newEsaladorREST()");
         //COMO NO ENTINEDO EL CICLO DE VIDA DE LOS SERVLETS ME DA NULL POINTER
 //        escalador = new Escalador();
@@ -39,19 +43,26 @@ public class EscaladorREST {
     @GET
     @Path("/eventos/")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Inscripcion> getInscripciones() {
-        escalador = new Escalador();
-        escalador.setEmail(idEscalador);
-//        System.out.println("getInscripciones() - " + escalador.getEmail());
-        EscaladorDAO escaladorDAO = new EscaladorDAO();
-        return escaladorDAO.getInscripcionEscaldor(escalador);
+    public List<Evento> getEventosCreados() {
+        organizador = new Organizador();
+        organizador.setEmail(idOrganizador);
+        return new OrganizadorDAO().getEventos(organizador);
     }
 
     @Path("/eventos/{idEvento}")
     public Object eventos(@PathParam("idEvento") String idEvento) {
-        escalador = new Escalador();
-        escalador.setEmail(idEscalador);
-//        System.out.println("eventos() - " + escalador.getEmail());
-        return new EventoEscalador(escalador, idEvento);
+        organizador = new Organizador();
+        organizador.setEmail(idOrganizador);
+        return new EventoOrganizador();
+    }
+
+    @POST
+    @Path("/eventos/")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void registrarEvento(Evento e) {
+        organizador = new Organizador();
+        organizador.setEmail(idOrganizador);
+        
     }
 }

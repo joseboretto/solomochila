@@ -33,10 +33,10 @@ public class ApplicationConfig extends Application {
         resources.add(ejecutables.EjecutablesREST.class);
         resources.add(servicios.EscaladorREST.class);
         resources.add(servicios.EventoREST.class);
-        resources.add(servicios.EventoResource.class);
         resources.add(servicios.JsonMoxyConfigurationContextResolver.class);
-        resources.add(servicios.Login.class);
+        resources.add(servicios.LoginREST.class);
         resources.add(servicios.MarcarBoulderResource.class);
+        resources.add(servicios.OrganizadorREST.class);
     }
 
 }

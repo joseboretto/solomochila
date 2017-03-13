@@ -5,31 +5,28 @@
  */
 package servicios;
 
+import java.util.Date;
 import java.util.List;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import modelo.Boulder;
+import modelo.Categoria;
+import modelo.Escalador;
 import modelo.Evento;
-;
+import modelo.Inscripcion;
 import persistencia.BaseDatos;
 import persistencia.EscaladorDAO;
-import persistencia.OrganizadorDAO;
 
 /**
  *
  * @author jose
  */
+public class EventoOrganizador {
 
-
-@Path("eventos")
-public class EventoREST {
-
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Evento> todosLosEventosInscriptos() {
-        EscaladorDAO escaladorDAO = new EscaladorDAO();
-        return escaladorDAO.getEventos();
-    }
 
 }

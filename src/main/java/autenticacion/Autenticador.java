@@ -9,7 +9,7 @@ package autenticacion;
  *
  * @author jose
  */
-import servicios.Login;
+import servicios.LoginREST;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.HttpTransport;
@@ -26,11 +26,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Escalador;
+import modelo.Organizador;
+import modelo.User;
+import modelo.Useriable;
 import persistencia.BaseDatos;
+import persistencia.EscaladorDAO;
+import persistencia.OrganizadorDAO;
 
 public final class Autenticador {
 
-    private static Autenticador authenticator = null;
+    private static Autenticador authenticator;
     private BaseDatos bd;
 
     private static final HttpTransport TRANSPORT = new NetHttpTransport();
@@ -39,10 +44,10 @@ public final class Autenticador {
 
     private static final String CLIENT_ID = "79763397676-vi2av2dmg6lfuirsfoll6l1pr46em83m.apps.googleusercontent.com";
     // A user storage which stores <username, password>
-    private final Map<String, String> usersStorage;
+    private Map<String, Boolean> usersStorage;
 
     // A user storage which stores <username, token>
-    private final Map<String, String> authorizationTokensStorage;
+    private Map<String, String> authorizationTokensStorage;
 
     private Autenticador() {
         System.out.println("----------NUEVO HASH MAP CARGADO");
@@ -70,7 +75,6 @@ public final class Autenticador {
     public boolean isAuthTokenValid(String usernameMatch1, String authToken) {
         if (authorizationTokensStorage.containsKey(authToken)) {
             String usernameMatch2 = authorizationTokensStorage.get(authToken);
-
             if (usernameMatch1.equals(usernameMatch2)) {
                 return true;
             }
@@ -101,26 +105,37 @@ public final class Autenticador {
 
     private void cargarHashMap() {
         System.out.println("Contenido HashMap");
-        bd = new BaseDatos();
-        List<Escalador> resultado = bd.getEscaladores();
-        for (Escalador escalador : resultado) {
-            System.out.println("Clave: " + escalador.getEmail());
-            usersStorage.put(escalador.getEmail(), "");
+        EscaladorDAO escaladorDAO = new EscaladorDAO();
+        List<Escalador> resultadoEscaladors = escaladorDAO.getEscaladores();
+        for (Escalador escalador : resultadoEscaladors) {
+            usersStorage.put(escalador.getEmail(), true);
+        }
+        OrganizadorDAO organizadorDAO = new OrganizadorDAO();
+        List<Organizador> resultadoOrganizadors = organizadorDAO.getOrganizadores();
+        for (Organizador organizador : resultadoOrganizadors) {
+            usersStorage.put(organizador.getEmail(), false);
         }
     }
 
-    private boolean estaRegistrado(String email) {
+    public boolean estaRegistrado(String email) {
         return usersStorage.containsKey(email);
     }
 
     private void nuevoEscalador(Escalador escalador) {
         bd = new BaseDatos();
         bd.persist(escalador, Escalador.class);
-        usersStorage.put(escalador.getEmail(), "");
+        usersStorage.put(escalador.getEmail(), true);
 
     }
 
-    public Escalador validateGoogleToken(String UserToken) {
+    private void nuevoOrganizador(Organizador organizador) {
+        bd = new BaseDatos();
+        bd.persist(organizador, Organizador.class);
+        usersStorage.put(organizador.getEmail(), false);
+
+    }
+
+    public Useriable validateGoogleToken(String UserToken) {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT, JSON_FACTORY)
                 .setAudience(Collections.singletonList(CLIENT_ID)).build();
 
@@ -129,8 +144,9 @@ public final class Autenticador {
         try {
             idToken = verifier.verify(UserToken);
         } catch (GeneralSecurityException | IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginREST.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         if (idToken != null) {
             GoogleIdToken.Payload payload = idToken.getPayload();
             // Get profile information from payload
@@ -140,21 +156,31 @@ public final class Autenticador {
                 System.out.println("Invalid ID token.");
                 return null;
             }
-            String name = (String) payload.get("name");
-            String familyName = (String) payload.get("family_name");
-            Escalador escalador = new Escalador(name, familyName, email);
+            String nombre = (String) payload.get("name");
+            String apellido = (String) payload.get("family_name");
+            return new User(nombre, apellido, email);
 
-            return escalador;
         }
         return null;
     }
 
-    public String registrarYgetToken(Escalador escalador) {
-        //si no esta registrado lo agrego a la BD
-        if (!estaRegistrado(escalador.getEmail())) {
-            nuevoEscalador(escalador);
+    public void registrarUsuario(User u, boolean esEscalador) throws GeneralSecurityException {
+        if (estaRegistrado(u.getEmail())) {
+            throw new GeneralSecurityException("Usuario ya registrado");
         }
-        return getTokenAuth(escalador.getEmail());
+        if (esEscalador) {
+            nuevoEscalador(new Escalador(u.getNombre(), u.getApellido(), u.getEmail()));
+        }
+        nuevoOrganizador(new Organizador(u.getNombre(), u.getApellido(), u.getEmail()));
+
+    }
+
+    public String generarToken(Useriable useriable) {
+        return getTokenAuth(useriable.getEmail());
+    }
+
+    public Boolean esEscalador(String email) {
+        return usersStorage.get(email);
     }
 
 }

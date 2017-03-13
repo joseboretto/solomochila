@@ -45,7 +45,7 @@ public class AutenticadorTest {
      @Test
      public void loginExitoso() {
          Escalador e = new Escalador("test", "test", "test@gmail.com");
-         String token = autenticador.registrarYgetToken(e);
+         String token = autenticador.generarToken(e);
          boolean esValido = autenticador.isAuthTokenValid(e.getEmail(), token);
          assertTrue(esValido);
      }
@@ -53,7 +53,7 @@ public class AutenticadorTest {
      @Test
      public void loginError() {
          Escalador e = new Escalador("test", "test", "test@gmail.com");
-         String token = autenticador.registrarYgetToken(e);
+         String token = autenticador.generarToken(e);
          //trato de entrar a otro email con mi token
          boolean esValido = autenticador.isAuthTokenValid("joseboretto@gmail.", token);
          assertFalse(esValido);
