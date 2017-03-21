@@ -21,17 +21,15 @@ public class MarcarBoulder implements Serializable {
     @Id
     private Boulder boulder;
     //como necesito recuperar todos los boulders de un evento agrego la relacion evento, pero no se si testa bien
-    private Evento evento;
     private boolean estaTerminado;
     
     
     public MarcarBoulder() {
     }
 
-    public MarcarBoulder(Escalador escalador, Boulder boulder, Evento evento) {
+    public MarcarBoulder(Escalador escalador, Boulder boulder) {
         this.escalador = escalador;
         this.boulder = boulder;
-        this.evento = evento;
         this.estaTerminado = true;
 
     }
@@ -68,13 +66,7 @@ public class MarcarBoulder implements Serializable {
         this.estaTerminado = estaTerminado;
     }
 
-    public Evento getEvento() {
-        return evento;
-    }
 
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
     
     
 

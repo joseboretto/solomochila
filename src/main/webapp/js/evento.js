@@ -20,8 +20,13 @@ function cargarInformacionEvento(eventos) {
     $("#fecha").text("Fecha: " + cadenaFecha);
     $("#direccion").text("Direccion: " + eventoActual.direccion);
     $("#precioInscripcion").text("Precio: $" + eventoActual.precioInscripcion);
-    $("#modalidades").text("Modalidades: " + eventoActual.modalidad.nombre);
-    $("#categorias").text("Categorias: " + eventoActual.categorias[0].categoria);
+    $("#modalidades").text("Modalidad: " + eventoActual.modalidad.nombre);
+    var textoCategorias = "";
+    for (var i = 0; i < eventoActual.categorias.length; i++) {
+        textoCategorias += eventoActual.categorias[i].categoria;
+    }
+    
+    $("#categorias").text("Categorias: " + textoCategorias);
     $("#boulders").text("Cantidad de boulders:" + eventoActual.boulders.length);
 }
 

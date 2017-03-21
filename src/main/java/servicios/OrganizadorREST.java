@@ -48,13 +48,20 @@ public class OrganizadorREST {
         organizador.setEmail(idOrganizador);
         return new OrganizadorDAO().getEventos(organizador);
     }
-
-    @Path("/eventos/{idEvento}")
-    public Object eventos(@PathParam("idEvento") String idEvento) {
-        organizador = new Organizador();
-        organizador.setEmail(idOrganizador);
-        return new EventoOrganizador();
+    
+    @GET
+    @Path("/asd/")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Organizador> getOrganizadors() {
+        return new OrganizadorDAO().getOrganizadores();
     }
+
+//    @Path("/eventos/{idEvento}")
+//    public Object eventos(@PathParam("idEvento") String idEvento) {
+//        organizador = new Organizador();
+//        organizador.setEmail(idOrganizador);
+//        return new EventoOrganizador();
+//    }
 
     @POST
     @Path("/eventos/")
@@ -63,6 +70,12 @@ public class OrganizadorREST {
     public void registrarEvento(Evento e) {
         organizador = new Organizador();
         organizador.setEmail(idOrganizador);
+        e.setOrganizador(organizador);
+        System.out.println(e);
+        new BaseDatos().persist(e, Evento.class);
         
     }
+    
+    
+
 }

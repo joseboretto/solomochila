@@ -7,6 +7,7 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -25,9 +26,7 @@ public class Organizador implements Serializable, Useriable {
     private String apellido;
     @Id
     private String email;
-    @OneToMany
-    private List<Evento> eventos;
-
+    
     //JPA only
     public Organizador() {
     }
@@ -51,16 +50,6 @@ public class Organizador implements Serializable, Useriable {
         return email;
     }
 
-    public List<Evento> getEventos() {
-        return eventos;
-    }
-
-    public void setEventos(List<Evento> eventos) {
-        this.eventos = eventos;
-    }
-    
-    
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -72,6 +61,13 @@ public class Organizador implements Serializable, Useriable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Organizador{" + "nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + '}';
+    }
+    
+    
     
     
     

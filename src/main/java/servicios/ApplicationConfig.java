@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ejecutables.EjecutablesREST.class);
         resources.add(servicios.EscaladorREST.class);
+        resources.add(servicios.EventoEscalador.class);
         resources.add(servicios.EventoREST.class);
         resources.add(servicios.JsonMoxyConfigurationContextResolver.class);
         resources.add(servicios.LoginREST.class);

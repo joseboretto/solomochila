@@ -11,7 +11,7 @@ function sendToken(id_token) {
             console.log("success login google");
             console.log(data);
             sessionStorage.setItem('login', JSON.stringify(data));
-            if (data.esEscalador) {
+            if (data.esEscalador == true) {
                 window.location.href = "inscripciones.html";
             } else {
                 window.location.href = "organizador.html";
@@ -83,18 +83,18 @@ function renderButton() {
 }
 
 
-function Escalador(fname, lname, age, eyecolor) {
-    this.nombre = fname;
-    this.apellido = lname;
-    this.email = age;
-    this.password = eyecolor;
-}
-
-function Credenciales(username, password) {
-    this.username = username;
-    this.password = password;
-}
-
-function Token(token) {
-    this.token = token;
-}
+// function Escalador(fname, lname, age, eyecolor) {
+//     this.nombre = fname;
+//     this.apellido = lname;
+//     this.email = age;
+//     this.password = eyecolor;
+// }
+//
+// function Credenciales(username, password) {
+//     this.username = username;
+//     this.password = password;
+// }
+//
+// function Token(token) {
+//     this.token = token;
+// }

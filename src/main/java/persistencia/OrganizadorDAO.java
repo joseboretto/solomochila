@@ -61,7 +61,7 @@ public class OrganizadorDAO {
     }
     
     public List<Evento> getEventos(Organizador organizador) {
-        Query query = em.createQuery(" SELECT e FROM Organizador o JOIN o.eventos e WHERE o = :organizadorFiltro ");
+        Query query = em.createQuery(" SELECT E FROM Evento AS E WHERE E.organizador = :organizadorFiltro ");
         query.setParameter("organizadorFiltro", organizador);
         List<Evento> l = query.getResultList();
         return l;

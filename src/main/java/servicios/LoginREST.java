@@ -37,15 +37,10 @@ public class LoginREST {
     @Produces({MediaType.APPLICATION_JSON})
     @Path("googleSingIn")
     public Response googleSingIn(String token) throws Exception {
-        Useriable user = authenticator.validateGoogleToken(token);
+        User user = authenticator.validateGoogleToken(token);
         if (user != null) {
             if (authenticator.estaRegistrado(user.getEmail())) {
-
-                String tokenAuth = authenticator.generarToken(user);
-                String jsonToken = "{ \"token\" : \"" + tokenAuth + "\" ,"
-                        + "\"email\" : \"" + user.getEmail() + "\" ,"
-                        + "\"esEscalador\" : \"" + authenticator.esEscalador(user.getEmail()) + "\" }";
-                return Response.ok(jsonToken).build();
+                   return Response.ok(armarJson((User) user)).build();
             } else {
                 //409
                 return Response.status(Response.Status.CONFLICT).entity(user).build();
@@ -64,11 +59,18 @@ public class LoginREST {
         System.out.println(user);
         authenticator = Autenticador.getInstance();
         authenticator.registrarUsuario(user, tipoUsuario.equals(true));
+
+        return Response.ok(armarJson(user)).build();
+
+    }
+
+    public String armarJson(User user) {
+        authenticator = Autenticador.getInstance();
         String tokenAuth = authenticator.generarToken(user);
         String jsonToken = "{ \"token\" : \"" + tokenAuth + "\" ,"
-                + "\"email\" : \"" + user.getEmail() + "\" }";
-        return Response.ok(jsonToken).build();
-
+                + "\"email\" : \"" + user.getEmail() + "\" ,"
+                + "\"esEscalador\" : \"" + authenticator.esEscalador(user.getEmail()) + "\" }";
+        return jsonToken;
     }
 
 }

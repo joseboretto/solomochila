@@ -73,7 +73,7 @@ public class BaseDatos {
         em.getTransaction().commit();
     }
 
-    public <T> T find(Long id, Class<T> clazz) {
+    public <T> T find(Object id, Class<T> clazz) {
         return em.find(clazz, id);
     }
 
@@ -247,22 +247,20 @@ public class BaseDatos {
         categorias2.add(categoriaMen);
         categorias2.add(categoriaMay);
 
-        Evento evento1 = new Evento("Choriboulder", "Cordoba", new Date(), 10, modalidadBloque, lista1, categorias2);
+        Organizador organizador = new Organizador();
+        organizador.setEmail("lucio.boretto@gmail.com");
+        Evento evento1 = new Evento("Choriboulder", "Cordoba", new Date(), 10, modalidadBloque, lista1, categorias2, organizador);
 
         Evento evento2 = new Evento("Campeonato Argentino de Escalada Deportiva 2016", "Buenos Aires",
-                new Date(1486821420000L), 10, modalidadBloque, lista2, categorias1);
+                new Date(1486821420000L), 10, modalidadBloque, lista2, categorias1, organizador);
 
         Evento evento3 = new Evento("Bari - 1° Encuentro Patagónico Infantil", "Bariloche",
-                new Date(1494251820000L), 10, modalidadBloque, lista3, categorias2);
+                new Date(1494251820000L), 10, modalidadBloque, lista3, categorias2, organizador);
 
         Evento evento4 = new Evento("Block Fest Primaveral", "Chubut",
-                new Date(1552226220000L), 10, modalidadBloque, lista4, categorias1);
+                new Date(1552226220000L), 10, modalidadBloque, lista4, categorias1, organizador);
 
-        ///ORGANIZADOR
-        Organizador organizador = new Organizador("root", "root", "root@root.com");
-        List<Evento> listaEventos = new LinkedList();
-        listaEventos.add(evento1);
-        organizador.setEventos(listaEventos);
+        
 
         em.getTransaction().begin();
         em.persist(evento1);

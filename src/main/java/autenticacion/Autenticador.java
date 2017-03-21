@@ -135,7 +135,7 @@ public final class Autenticador {
 
     }
 
-    public Useriable validateGoogleToken(String UserToken) {
+    public User validateGoogleToken(String UserToken) {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT, JSON_FACTORY)
                 .setAudience(Collections.singletonList(CLIENT_ID)).build();
 

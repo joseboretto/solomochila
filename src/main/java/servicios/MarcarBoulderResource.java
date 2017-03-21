@@ -46,7 +46,7 @@ public class MarcarBoulderResource {
 
     @POST
     public void marcarBoulderX(@PathParam("idBoulder") String idBoulder) {
-        MarcarBoulder marca = new MarcarBoulder(escalador, boulder, evento);
+        MarcarBoulder marca = new MarcarBoulder(escalador, boulder);
         bd.persist(marca, MarcarBoulder.class);
     }
 

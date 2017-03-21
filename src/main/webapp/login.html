@@ -20,7 +20,14 @@
                 //si login trae algo pasa como true
                 if (login) {
                     // similar behavior as clicking on a link
-                    window.location.href = "inscripciones.html";
+                    if (login.esEscalador == true) {
+
+                        window.location.href = "inscripciones.html";
+
+                    } else {
+                        window.location.href = "organizador.html";
+
+                    }
                 }
             }
             redireccionar();

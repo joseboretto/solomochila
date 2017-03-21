@@ -126,7 +126,7 @@ public class EscaladorDAO {
         Query query = em.createQuery(
                 " SELECT m "
                 + "FROM MarcarBoulder m "
-                + "WHERE m.escalador = :email AND m.evento = :idEvento");
+                + "WHERE m.escalador = :email AND m.boulder.evento = :idEvento");
         query.setParameter("email", escalador);
         query.setParameter("idEvento", evento);
         List<Object> l = query.getResultList();
